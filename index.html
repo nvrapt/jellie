@@ -493,6 +493,42 @@
     gap: 0.5px;
   }
 }
+
+@media (max-width: 768px) {
+  #letterTiles {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0px;
+    width: 90vw;
+    max-width: 360px;
+    margin: 0 auto;
+    justify-items: center;
+  }
+
+  #letterTiles > div {
+    width: 37px !important;
+    height: 37px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #currentWordDisplay > .tile.selected {
+    width: 37px !important;
+    height: 37px !important;
+    padding: 0.1rem !important;
+    font-size: 0.75rem !important;
+    margin: 0 0.5px !important;
+  }
+
+  #currentWordDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 360px;
+    margin: 0 auto 0.25rem auto;
+    justify-content: center;
+    gap: 0px;
+  }
+}
 </style>
 </head>
 <body>
