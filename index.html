@@ -217,7 +217,7 @@
   }
 
   .grid, .solved-group {
-    grid-template-columns: repeat(2, 45vw);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
   }
 
@@ -279,6 +279,38 @@
     min-width: 600px;
   }
 }
+
+@media (max-width: 768px) {
+  .grid, .solved-group {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  #letterTiles {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    justify-content: center;
+  }
+
+  #currentWordDisplay {
+    max-width: 90vw;
+    font-size: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .game {
+    width: 95vw !important;
+    margin: 2rem auto;
+  }
+
+  #letterTiles > div {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .tile {
+    font-size: 0.9rem !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -302,13 +334,11 @@
 <label for="puzzleSelector">Select Puzzle:</label>
 <select id="puzzleSelector"></select>
 </div>
-
 <div class="puzzle-layout">
 <div style="overflow-x: auto; max-width: 100vw;">
 <div id="puzzleCanvasContainer"></div>
 </div>
 </div>
-
 <div style="text-align:center; margin-top: 1rem;">
 <button id="reshuffleButton" style="padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 12px; border: none; background-color: #6ba66b; color: white; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease;">Reshuffle</button>
 <div id="puzzleVictoryMessage" style="font-size: 1.5rem; font-weight: bold; color: #5a935a; margin-top: 1rem; display: none;">#yayyyyy u did it</div>
