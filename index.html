@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Silly Games for Ellie</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/konva@9.2.0/konva.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Silly Games for Ellie</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/konva@9.2.0/konva.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
     body {
       font-family: 'Quicksand', sans-serif;
       background: #f4fff5;
@@ -272,59 +273,66 @@
   }
 }
 
+
+@media (max-width: 768px) {
+  #puzzleCanvasContainer {
+    min-width: 600px;
+  }
+}
 </style>
 </head>
 <body>
-  <h1>Silly Games for Ellie</h1>
-  <nav class="tab-nav">
-    <button class="active" data-tab="connections">Connections</button>
-    <button data-tab="puzzles">Puzzles</button>
-    <button data-tab="anagrams">Anagrams</button>
-
-  </nav>
-
-  <section id="connections" class="tab-section active">
-    <div class="controls">
-      <select id="gameSelector"></select>
-      <button id="shuffleButton">Shuffle</button>
-    </div>
-    <div class="game-container" id="game-container"></div>
-    <div id="victoryMessage">#yayyyyy u did it</div>
-    <button id="resetButton">Play Again</button>
-  </section>
-
-<section id="puzzles" class="tab-section">
-  <div class="controls">
-    <label for="puzzleSelector">Select Puzzle:</label>
-    <select id="puzzleSelector"></select>
+<h1>Silly Games for Ellie</h1>
+<nav class="tab-nav">
+<button class="active" data-tab="connections">Connections</button>
+<button data-tab="puzzles">Puzzles</button>
+<button data-tab="anagrams">Anagrams</button>
+</nav>
+<section class="tab-section active" id="connections">
+<div class="controls">
+<select id="gameSelector"></select>
+<button id="shuffleButton">Shuffle</button>
 </div>
-  <div class="puzzle-layout" id="puzzleCanvasContainer"></div>
-  <div style="text-align:center; margin-top: 1rem;">
-  <button id="reshuffleButton" style="padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 12px; border: none; background-color: #6ba66b; color: white; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease;">Reshuffle</button>
-  <div id="puzzleVictoryMessage" style="font-size: 1.5rem; font-weight: bold; color: #5a935a; margin-top: 1rem; display: none;">#yayyyyy u did it</div>
+<div class="game-container" id="game-container"></div>
+<div id="victoryMessage">#yayyyyy u did it</div>
+<button id="resetButton">Play Again</button>
+</section>
+<section class="tab-section" id="puzzles">
+<div class="controls">
+<label for="puzzleSelector">Select Puzzle:</label>
+<select id="puzzleSelector"></select>
+</div>
+
+<div class="puzzle-layout">
+<div style="overflow-x: auto; max-width: 100vw;">
+<div id="puzzleCanvasContainer"></div>
+</div>
+</div>
+
+<div style="text-align:center; margin-top: 1rem;">
+<button id="reshuffleButton" style="padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 12px; border: none; background-color: #6ba66b; color: white; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease;">Reshuffle</button>
+<div id="puzzleVictoryMessage" style="font-size: 1.5rem; font-weight: bold; color: #5a935a; margin-top: 1rem; display: none;">#yayyyyy u did it</div>
 </div>
 </section>
-
-<section id="anagrams" class="tab-section">
-  <div id="feedback" style="text-align: center; font-weight: bold; font-size: 2rem; margin-bottom: 1rem; min-height: 2.5rem;"></div>
-  <div class=\"game\" style=\"width: 720px; height: 420px; margin: 2rem auto; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
-    <div id="currentWordDisplay" style="width: calc(64px * 7 + 72px); height: 100px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 2rem auto; background-color: rgba(0,0,0,0.05); border-radius: 12px; padding: 0.5rem;"></div>
-    <div id="letterTiles" style="display: grid; grid-template-columns: repeat(7, 64px); justify-content: center; gap: 2px; padding-bottom: 1rem; width: 100%;"></div>
-  </div>
-  <div style="text-align: center; margin-top: 1rem;">
-    <button id="submitWord">Submit Word</button>
-    <button id="shuffleLetters">Shuffle</button>
-        <div id="timer" style="margin-top: 1rem; font-size: 1.2rem;"></div>
-    <div id="scoreBoard" style="margin-top: 1rem; font-size: 1.5rem;"></div>
-  </div>
+<section class="tab-section" id="anagrams">
+<div id="feedback" style="text-align: center; font-weight: bold; font-size: 2rem; margin-bottom: 1rem; min-height: 2.5rem;"></div>
+<div 2rem="" 420px;="" 720px;="" auto;="" class='\"game\"' column;="" display:="" flex-direction:="" flex;="" height:="" justify-content:="" margin:="" position:="" relative;"="" space-between;="" style='\"width:'>
+<div id="currentWordDisplay" style="width: calc(64px * 7 + 72px); height: 100px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 2rem auto; background-color: rgba(0,0,0,0.05); border-radius: 12px; padding: 0.5rem;"></div>
+<div id="letterTiles" style="display: grid; grid-template-columns: repeat(7, 64px); justify-content: center; gap: 2px; padding-bottom: 1rem; width: 100%;"></div>
+</div>
+<div style="text-align: center; margin-top: 1rem;">
+<button id="submitWord">Submit Word</button>
+<button id="shuffleLetters">Shuffle</button>
+<div id="timer" style="margin-top: 1rem; font-size: 1.2rem;"></div>
+<div id="scoreBoard" style="margin-top: 1rem; font-size: 1.5rem;"></div>
+</div>
 <div id="wordList" style="margin-top: 2rem; font-size: 1rem; text-align: center;"><h3>Words Found:</h3><ul id="foundWords" style="list-style: none; padding: 0;"></ul></div>
 <div id="resultModal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; border: 2px solid #ccc; padding: 1rem 2rem; border-radius: 12px; z-index: 1000; box-shadow: 0 0 10px rgba(0,0,0,0.2); text-align: center;">
-  <h2>Time's Up!</h2>
-  <div id="topWords"></div>
-  <button onclick="document.getElementById('resultModal').style.display='none'">Close</button>
+<h2>Time's Up!</h2>
+<div id="topWords"></div>
+<button onclick="document.getElementById('resultModal').style.display='none'">Close</button>
 </div>
 </section>
-
 <script>
 let letters = [];
 let selectedTiles = [];
@@ -549,13 +557,6 @@ document.querySelector('[data-tab="anagrams"]').addEventListener("click", () => 
   startAnagramGame();
 });
 </script>
-
-
-
-
-
-
-
 <style>
   nav.tab-nav button {
     font-family: 'Quicksand', sans-serif;
@@ -594,7 +595,6 @@ document.querySelector('[data-tab="anagrams"]').addEventListener("click", () => 
     padding: 2rem;
   }
 </style>
-
 <script>
   const imageBaseURL = "https://raw.githubusercontent.com/nvrapt/jellie/main/puzzles/";
   const gridSize = 6;
@@ -654,13 +654,11 @@ document.querySelector('[data-tab="anagrams"]').addEventListener("click", () => 
     document.getElementById('puzzleVictoryMessage').style.display = 'none';
 
     
-const containerWidth = window.innerWidth < 768 ? window.innerWidth * 0.9 : boardWidth * 2 + 40;
-const containerHeight = window.innerWidth < 768 ? containerWidth : boardHeight;
-
 stage = new Konva.Stage({
   container: 'puzzleCanvasContainer',
-  width: containerWidth,
-  height: containerHeight
+  width: boardWidth * 2 + 40,
+  height: boardHeight
+});
 
       container: 'puzzleCanvasContainer',
       width: boardWidth * 2 + 40,
@@ -767,9 +765,7 @@ stage = new Konva.Stage({
 
   fetchPuzzleImageList();
 </script>
-
-
-  <script>
+<script>
     const gameSelector = document.getElementById("gameSelector");
     const gameContainer = document.getElementById("game-container");
     const shuffleButton = document.getElementById("shuffleButton");
@@ -934,7 +930,6 @@ stage = new Konva.Stage({
 
     renderGame(0, true);
   </script>
-
 <script>
   document.querySelectorAll('.tab-nav button').forEach(button => {
     button.addEventListener('click', () => {
@@ -946,7 +941,5 @@ stage = new Konva.Stage({
     });
   });
 </script>
-
-
 </body>
 </html>
