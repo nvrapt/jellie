@@ -320,15 +320,72 @@
   }
 
   .tile {
-    font-size: 0.9rem !important;
-    padding: 0.5rem;
-    min-height: 48px !important;
+    font-size: 0.85rem !important;
+    padding: 0.4rem;
+    min-height: 44px !important;
   }
 
   .game {
-    width: 96vw;
+    width: 95vw;
     padding: 1rem;
     margin: 0 auto;
+  }
+
+  #letterTiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    justify-items: center;
+    width: 95vw;
+    margin: 0 auto;
+  }
+
+  #letterTiles > div {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  #currentWordDisplay {
+    flex-wrap: wrap;
+    max-width: 95vw;
+    font-size: 1rem;
+    margin: 0 auto 1rem auto;
+    gap: 8px;
+  }
+
+  .tab-section {
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #letterTiles {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    justify-items: center;
+    width: 98vw;
+    margin: 0 auto;
+  }
+
+  #letterTiles > div {
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+  }
+
+  .tile {
+    font-size: 0.75rem !important;
+    padding: 0.3rem !important;
+    min-height: 40px !important;
+  }
+
+  #currentWordDisplay {
+    flex-wrap: wrap;
+    max-width: 98vw;
+    font-size: 0.9rem;
+    margin: 0 auto 1rem auto;
+    gap: 6px;
   }
 }
 </style>
