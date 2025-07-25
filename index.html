@@ -285,36 +285,27 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
-#letterTiles {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  width: 90vw;
-  max-width: 360px;
-  margin: 0 auto;
-  justify-items: center;
-}
+  #letterTiles {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    justify-content: center;
+  }
 
-#letterTiles > div {
-  width: 38px;
-  height: 38px;
-}
-
-#currentWordDisplay {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 360px;
-  margin: 0 auto 1rem auto;
-  justify-content: center;
-  gap: 5px;
-}
-
+  #currentWordDisplay {
+    max-width: 90vw;
+    font-size: 1rem;
+    flex-wrap: wrap;
+  }
 
   .game {
     width: 95vw !important;
     margin: 2rem auto;
   }
 
+  #letterTiles > div {
+    width: 50px !important;
+    height: 50px !important;
+  }
 
   .tile {
     font-size: 0.9rem !important;
@@ -322,13 +313,11 @@
 }
 
 @media (max-width: 768px) {
-.grid, .solved-group {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  width: 90vw;
-  max-width: 360px;
-  margin: 0 auto 1rem auto;
-}
+  .grid, .solved-group {
+    grid-template-columns: repeat(4, 1fr);
+    width: 95vw;
+    margin: 0 auto 1rem auto;
+  }
 
   .tile {
     font-size: 0.85rem !important;
@@ -336,12 +325,11 @@
     min-height: 44px !important;
   }
 
-.game {
-  width: 90vw;
-  max-width: 380px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+  .game {
+    width: 95vw;
+    padding: 1rem;
+    margin: 0 auto;
+  }
 
   #letterTiles {
     display: grid;
@@ -398,6 +386,55 @@
     font-size: 0.9rem;
     margin: 0 auto 1rem auto;
     gap: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid, .solved-group {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 90vw;
+    max-width: 360px;
+    margin: 0 auto 1rem auto;
+  }
+
+  .tile {
+    font-size: 0.75rem !important;
+    padding: 0.2rem !important;
+    min-height: 36px !important;
+    height: 36px !important;
+  }
+
+  .game {
+    width: 90vw;
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 0.5rem;
+  }
+
+  #letterTiles {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    width: 90vw;
+    max-width: 360px;
+    margin: 0 auto;
+    justify-items: center;
+  }
+
+  #letterTiles > div {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+  }
+
+  #currentWordDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 360px;
+    margin: 0 auto 1rem auto;
+    justify-content: center;
+    gap: 4px;
   }
 }
 </style>
