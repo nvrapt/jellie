@@ -529,6 +529,31 @@
     gap: 0px;
   }
 }
+
+@media (max-width: 768px) {
+  .grid, .solved-group {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    width: 92vw;
+    max-width: 360px;
+    margin: 0 auto 1rem auto;
+  }
+
+  .tile {
+    font-size: 0.7rem !important;
+    padding: 0.1rem !important;
+    min-height: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+  }
+
+  .game {
+    width: 92vw;
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 0.5rem;
+  }
+}
 </style>
 </head>
 <body>
