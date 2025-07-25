@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silly Games for Ellie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/konva@9.2.0/konva.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #f4fff5;
+      margin: 0;
+      padding: 1rem;
+      text-align: center;
+      color: #2c3e2e;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #5a935a;
+    }
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav.tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+    nav.tab-nav button {
+      font-family: 'Quicksand', sans-serif;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #2c3e2e;
+      border-bottom: 2px solid transparent;
+    }
+    nav.tab-nav button.active {
+      border-bottom: 2px solid #5a935a;
+    }
+    .tab-section {
+      display: none;
+    }
+    .tab-section.active {
+      display: block;
+    }
+    .puzzle-layout {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+.puzzle-area {
+  width: 480px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #aac9aa;
+  border-radius: 12px;
+  background: #fff;
+}
+
+
+    .konva-container {
+      display: inline-block;
+    }
+
+
+
+    canvas {
+      max-width: 95vw;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    select, button {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      border: 2px solid #aac9aa;
+      background-color: #e9f9ea;
+      color: #2c3e2e;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    select {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      border: 2px solid #aac9aa;
+      background-color: #e9f9ea;
+      color: #2c3e2e;
+      font-weight: bold;
+      outline: none;
+      appearance: auto;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    select:hover {
+      background-color: #d5f0d6;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: none;
+      background-color: #6ba66b;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-family: 'Quicksand', sans-serif;
+    }
+    button:hover {
+      background-color: #5b945c;
+    }
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 140px);
+      justify-content: center;
+      margin-bottom: 2rem;
+      gap: 14px;
+    }
+    .tile {
+      background-color: #cfeacc;
+      padding: 1rem;
+      border-radius: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+      transform: scale(1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+    }
+    .tile:hover {
+      transform: scale(1.05);
+      background-color: #c9edca;
+    }
+    .tile.selected {
+      background-color: #87c78a;
+      color: white;
+    }
+    .tile.found {
+      background-color: #b9e2bc;
+      color: #2c3e2e;
+      cursor: default;
+      pointer-events: none;
+      animation: fadeIn 0.5s ease;
+    }
+    .game {
+      border: 2px dashed #cce6cc;
+      border-radius: 24px;
+      padding: 1.5rem;
+      background: #e9f9ea;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.03);
+    }
+    .category {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+    .solved-group {
+      display: grid;
+      grid-template-columns: repeat(4, 140px);
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 1rem;
+      animation: slideIn 0.4s ease;
+    }
+    #victoryMessage {
+      display: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #5a935a;
+      margin-top: 1rem;
+    }
+    #resetButton {
+      display: none;
+      margin-top: 1rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Silly Games for Ellie</h1>
+  <nav class="tab-nav">
+    <button class="active" data-tab="connections">Connections</button>
+    <button data-tab="puzzles">Puzzles</button>
+    <button data-tab="anagrams">Anagrams</button>
+
+  </nav>
+
+  <section id="connections" class="tab-section active">
+    <div class="controls">
+      <select id="gameSelector"></select>
+      <button id="shuffleButton">Shuffle</button>
+    </div>
+    <div class="game-container" id="game-container"></div>
+    <div id="victoryMessage">#yayyyyy u did it</div>
+    <button id="resetButton">Play Again</button>
+  </section>
+
+<section id="puzzles" class="tab-section">
+  <div class="controls">
+    <label for="puzzleSelector">Select Puzzle:</label>
+    <select id="puzzleSelector"></select>
+</div>
+  <div class="puzzle-layout" id="puzzleCanvasContainer"></div>
+  <div style="text-align:center; margin-top: 1rem;">
+  <button id="reshuffleButton" style="padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 12px; border: none; background-color: #6ba66b; color: white; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease;">Reshuffle</button>
+  <div id="puzzleVictoryMessage" style="font-size: 1.5rem; font-weight: bold; color: #5a935a; margin-top: 1rem; display: none;">#yayyyyy u did it</div>
+</div>
+</section>
+
+
+
+
+
+<!-- Add this in your existing HTML after the puzzles section -->
+<section id="anagrams" class="tab-section">
+  <div id="feedback" style="text-align: center; font-weight: bold; font-size: 2rem; margin-bottom: 1rem; min-height: 2.5rem;"></div>
+  <div class=\"game\" style=\"width: 720px; height: 420px; margin: 2rem auto; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+    <div id="currentWordDisplay" style="width: calc(64px * 7 + 72px); height: 100px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 2rem auto; background-color: rgba(0,0,0,0.05); border-radius: 12px; padding: 0.5rem;"></div>
+    <div id="letterTiles" style="display: grid; grid-template-columns: repeat(7, 64px); justify-content: center; gap: 2px; padding-bottom: 1rem; width: 100%;"></div>
+  </div>
+  <div style="text-align: center; margin-top: 1rem;">
+    <button id="submitWord">Submit Word</button>
+    <button id="shuffleLetters">Shuffle</button>
+        <div id="timer" style="margin-top: 1rem; font-size: 1.2rem;"></div>
+    <div id="scoreBoard" style="margin-top: 1rem; font-size: 1.5rem;"></div>
+  </div>
+<div id="wordList" style="margin-top: 2rem; font-size: 1rem; text-align: center;"><h3>Words Found:</h3><ul id="foundWords" style="list-style: none; padding: 0;"></ul></div>
+<div id="resultModal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; border: 2px solid #ccc; padding: 1rem 2rem; border-radius: 12px; z-index: 1000; box-shadow: 0 0 10px rgba(0,0,0,0.2); text-align: center;">
+  <h2>Time's Up!</h2>
+  <div id="topWords"></div>
+  <button onclick="document.getElementById('resultModal').style.display='none'">Close</button>
+</div>
+</section>
+
+<script>
+let letters = [];
+let selectedTiles = [];
+let usedWords = new Set();
+let score = 0;
+let timerInterval;
+let dictionary = new Set();
+
+// Load full dictionary from hosted source or static file
+fetch('https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt')
+  .then(response => response.text())
+  .then(text => {
+    dictionary = new Set(text.toUpperCase().split('\n').map(word => word.trim()));
+  });
+
+function generateCombinations(arr, k) {
+  const results = [];
+  const helper = (start, combo) => {
+    if (combo.length === k) {
+      results.push(combo);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      helper(i + 1, combo.concat(arr[i]));
+    }
+  };
+  helper(0, []);
+  return results;
+}
+
+function countValidWords(lettersSubset) {
+  const permutations = new Set();
+  const generate = (prefix, remaining) => {
+    if (prefix.length > 0) permutations.add(prefix);
+    for (let i = 0; i < remaining.length; i++) {
+      generate(prefix + remaining[i], remaining.slice(0, i).concat(remaining.slice(i + 1)));
+    }
+  };
+  generate("", lettersSubset);
+  let count = 0;
+  for (const word of permutations) {
+    if (dictionary.has(word)) count++;
+  }
+  return count;
+}
+
+function generateLetters() {
+  const requiredVowelCount = 3;
+  const vowels = ['A', 'E', 'I', 'O', 'U'];
+  const consonants = 'BCDFGHJKLMNPRST'.split(''); // Simplified set
+  const all = vowels.concat(consonants);
+
+  let attempts = 0;
+  while (attempts < 1000) {
+    let result = [];
+    const counts = {};
+    let vowelCount = 0;
+
+    while (result.length < 7) {
+      const l = all[Math.floor(Math.random() * all.length)];
+      if (l === 'K' && (counts['K'] || 0) >= 1) continue;
+      if (vowels.includes(l)) {
+        if (vowelCount >= 3) continue;
+        vowelCount++;
+      }
+      if (result.includes(l)) continue;
+      result.push(l);
+      counts[l] = (counts[l] || 0) + 1;
+    }
+
+    if (vowelCount !== requiredVowelCount) {
+      attempts++;
+      continue;
+    }
+
+    const fullCount = countValidWords(result);
+    let fourLetterTotal = 0;
+    let fiveLetterTotal = 0;
+
+    for (const combo of generateCombinations(result, 4)) {
+      fourLetterTotal += countValidWords(combo);
+    }
+    for (const combo of generateCombinations(result, 5)) {
+      fiveLetterTotal += countValidWords(combo);
+    }
+
+    if (fullCount >= 10 && fiveLetterTotal >= 20 && fourLetterTotal >= 20 && countValidWords(result) >= 2) {
+      return result.sort(() => Math.random() - 0.5);
+    }
+    attempts++;
+  }
+
+  return ['S', 'E', 'T', 'A', 'L', 'N', 'R']; // fallback
+}
+
+function renderLetters() {
+  const tileContainer = document.getElementById("letterTiles");
+  const wordDisplay = document.getElementById("currentWordDisplay");
+  tileContainer.innerHTML = "";
+  // Do not reset word display to preserve layout
+  wordDisplay.innerHTML = "";
+  wordDisplay.style.display = 'flex';
+  wordDisplay.style.justifyContent = 'center';
+  wordDisplay.style.gap = '12px';
+  selectedTiles = [];
+
+  letters.forEach((letter, index) => {
+    const slot = document.createElement("div");
+    slot.style.width = '64px'; slot.style.height = '64px';
+    slot.style.display = 'flex';
+    slot.style.justifyContent = 'center';
+    slot.style.alignItems = 'center';
+
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    tile.textContent = letter;
+    tile.style.boxSizing = 'border-box';
+    tile.style.aspectRatio = '1';
+    tile.style.width = '64px'; tile.style.height = '64px';
+    tile.style.display = 'flex';
+    tile.style.alignItems = 'center';
+    tile.style.justifyContent = 'center';
+    tile.style.margin = '0';
+    tile.onclick = () => {
+      tile.style.opacity = '0';
+      tile.style.pointerEvents = 'none';
+      const wordTile = document.createElement("div");
+      wordTile.className = "tile selected";
+      wordTile.textContent = letter;
+      wordTile.style.boxSizing = 'border-box';
+      wordTile.style.aspectRatio = '1';
+      wordTile.style.width = '64px'; wordTile.style.height = '64px';
+      wordTile.style.display = 'flex';
+      wordTile.style.alignItems = 'center';
+      wordTile.style.justifyContent = 'center';
+      wordTile.style.margin = '0';
+      wordTile.onclick = () => {
+        const index = selectedTiles.indexOf(wordTile);
+        if (index > -1) {
+          selectedTiles.splice(index, 1);
+          wordTile.remove();
+          tile.style.opacity = '1';
+          tile.style.pointerEvents = 'auto';
+        }
+      };
+      selectedTiles.push(wordTile);
+      wordDisplay.appendChild(wordTile);
+    };
+
+    slot.appendChild(tile);
+    tileContainer.appendChild(slot);
+  });
+}
+
+function startAnagramGame() {
+  document.getElementById("foundWords").innerHTML = "";
+  letters = generateLetters();
+  renderLetters();
+  usedWords.clear();
+  score = 0;
+  document.getElementById("scoreBoard").textContent = `Score: ${score}`;
+  document.getElementById("feedback").textContent = "";
+
+  let timeLeft = 60;
+  document.getElementById("timer").textContent = "Time left: 60s";
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").textContent = `Time left: ${timeLeft}s`;
+    if (timeLeft === 0) {
+      clearInterval(timerInterval);
+      document.getElementById("scoreBoard").textContent = `Time's up! Total Score: ${score}`;
+      document.getElementById("feedback").textContent = "";
+
+      const wordScores = Array.from(usedWords).map(word => {
+        const pts = word.length + (word.length >= 6 ? 3 : 0);
+        return { word, pts };
+      });
+
+      wordScores.sort((a, b) => b.pts - a.pts);
+      const top10 = wordScores.slice(0, 10);
+
+      const allWordsList = wordScores.map((w, i) => `<div>${i + 1}. ${w.word} — ${w.pts} pts</div>`).join('');
+
+      const resultHTML = `<div style='text-align:left; margin-top:1rem;'>${allWordsList}</div><p style='margin-top:1rem;'>Total: ${score} points</p>`;
+
+      document.getElementById("topWords").innerHTML = resultHTML;
+      document.getElementById("resultModal").style.display = 'block';
+    }
+  }, 1000);
+}
+
+document.getElementById("submitWord").onclick = () => {
+  const word = selectedTiles.map(e => e.textContent).join('');
+  const feedback = document.getElementById("feedback");
+  if (word.length < 3) {
+    feedback.textContent = `${word} — Too short!`;
+    
+  } else if (usedWords.has(word)) {
+    feedback.textContent = `${word} — Already used!`;
+  } else if (dictionary.has(word)) {
+    usedWords.add(word);
+    let pts = word.length + (word.length >= 6 ? 3 : 0);
+    score += pts;
+    feedback.textContent = `${word} — +${pts} points!`;
+    document.getElementById("scoreBoard").textContent = `Score: ${score}`;
+    const li = document.createElement("li");
+    li.textContent = word;
+    document.getElementById("foundWords").appendChild(li);
+  } else {
+    feedback.textContent = `${word} — Invalid word!`;
+  }
+  renderLetters();
+};
+
+document.getElementById("shuffleLetters").onclick = () => {
+  letters = letters.sort(() => Math.random() - 0.5);
+  renderLetters();
+};
+
+document.querySelector('[data-tab="anagrams"]').addEventListener("click", () => {
+  startAnagramGame();
+});
+</script>
+
+
+
+
+
+
+
+<style>
+  nav.tab-nav button {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #e9f9ea;
+    border: 2px solid #5a935a;
+    border-radius: 12px;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #2c3e2e;
+    transition: all 0.2s ease-in-out;
+  }
+  nav.tab-nav button.active {
+    background-color: #5a935a;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  nav.tab-nav {
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .puzzle-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: nowrap;
+    padding: 2rem;
+  }
+</style>
+
+<script>
+  const imageBaseURL = "https://raw.githubusercontent.com/nvrapt/jellie/main/puzzles/";
+  const gridSize = 6;
+  const pieceSize = 80;
+  const boardWidth = pieceSize * gridSize;
+  const boardHeight = pieceSize * gridSize;
+
+  let puzzleSelectorEl;
+  let stage, pileLayer, boardLayer, gridLayer;
+  let currentImageName = null;
+
+  async function fetchPuzzleImageList() {
+    const res = await fetch("https://api.github.com/repos/nvrapt/jellie/contents/puzzles");
+    const files = await res.json();
+    const images = files.filter(f => f.type === 'file' && /\.(png|jpe?g|webp)$/i.test(f.name));
+    puzzleSelectorEl = document.getElementById("puzzleSelector");
+    puzzleSelectorEl.innerHTML = '';
+    images.forEach(file => {
+      const opt = document.createElement('option');
+      opt.value = file.name;
+      opt.textContent = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+      puzzleSelectorEl.appendChild(opt);
+    });
+    if (images.length > 0) loadPuzzle(images[0].name);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('puzzleSelector').addEventListener('change', (e) => {
+      loadPuzzle(e.target.value);
+    });
+    document.getElementById('reshuffleButton').addEventListener('click', () => {
+      if (currentImageName) loadPuzzle(currentImageName);
+    });
+  });
+
+  function loadPuzzle(imageName) {
+    currentImageName = imageName;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const side = Math.min(img.width, img.height);
+      const squareCanvas = document.createElement('canvas');
+      squareCanvas.width = side;
+      squareCanvas.height = side;
+      const ctx = squareCanvas.getContext('2d');
+      ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, side, side);
+      const finalImg = new Image();
+      finalImg.onload = () => generatePuzzle(finalImg);
+      finalImg.src = squareCanvas.toDataURL();
+    };
+    img.src = imageBaseURL + imageName;
+  }
+
+  function generatePuzzle(image) {
+    const container = document.getElementById('puzzleCanvasContainer');
+    container.innerHTML = '';
+    document.getElementById('puzzleVictoryMessage').style.display = 'none';
+
+    stage = new Konva.Stage({
+      container: 'puzzleCanvasContainer',
+      width: boardWidth * 2 + 40,
+      height: boardHeight
+    });
+
+    pileLayer = new Konva.Layer();
+    boardLayer = new Konva.Layer();
+    gridLayer = new Konva.Layer();
+    stage.add(gridLayer);
+    stage.add(pileLayer);
+    stage.add(boardLayer);
+
+    const divider = new Konva.Line({
+      points: [boardWidth + 20, 0, boardWidth + 20, boardHeight],
+      stroke: '#ccc',
+      strokeWidth: 2,
+      dash: [4, 4]
+    });
+    gridLayer.add(divider);
+
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
+        const rect = new Konva.Rect({
+          x: boardWidth + 40 + x * pieceSize,
+          y: y * pieceSize,
+          width: pieceSize,
+          height: pieceSize,
+          stroke: '#ddd',
+          strokeWidth: 1,
+          fill: '#f4f4f4',
+          opacity: 0.3,
+          listening: false
+        });
+        gridLayer.add(rect);
+      }
+    }
+    gridLayer.batchDraw();
+
+    let placedPieces = 0;
+    const totalPieces = gridSize * gridSize;
+
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
+        const sx = x * (image.width / gridSize);
+        const sy = y * (image.height / gridSize);
+
+        const pieceCanvas = document.createElement('canvas');
+        pieceCanvas.width = pieceSize;
+        pieceCanvas.height = pieceSize;
+        const pctx = pieceCanvas.getContext('2d');
+        pctx.drawImage(image, sx, sy, image.width / gridSize, image.height / gridSize, 0, 0, pieceSize, pieceSize);
+
+        const pieceImg = new Image();
+        pieceImg.src = pieceCanvas.toDataURL();
+
+        pieceImg.onload = () => {
+          const shape = new Konva.Image({
+            image: pieceImg,
+            width: pieceSize,
+            height: pieceSize,
+            x: Math.random() * (boardWidth - pieceSize),
+            y: Math.random() * (boardHeight - pieceSize),
+            draggable: true
+          });
+
+          shape.correctX = boardWidth + 40 + x * pieceSize;
+          shape.correctY = y * pieceSize;
+
+          shape.on('dragmove', function () {
+            // Constrain movement within canvas bounds
+            const maxX = stage.width() - pieceSize;
+            const maxY = stage.height() - pieceSize;
+            shape.x(Math.max(0, Math.min(shape.x(), maxX)));
+            shape.y(Math.max(0, Math.min(shape.y(), maxY)));
+          });
+
+          shape.on('dragend', function () {
+            const dx = shape.x() - shape.correctX;
+            const dy = shape.y() - shape.correctY;
+            if (Math.abs(dx) < 40 && Math.abs(dy) < 40) {
+              shape.position({ x: shape.correctX, y: shape.correctY });
+              shape.draggable(false);
+              shape.opacity(0.9);
+              placedPieces++;
+              if (placedPieces === totalPieces) {
+                document.getElementById('puzzleVictoryMessage').style.display = 'block';
+                confetti({
+                  particleCount: 250,
+                  spread: 80,
+                  origin: { y: 0.6 }
+                });
+              }
+            }
+            stage.draw();
+          });
+
+          pileLayer.add(shape);
+          pileLayer.draw();
+        };
+      }
+    }
+  }
+
+  fetchPuzzleImageList();
+</script>
+
+
+
+  <script>
+    const gameSelector = document.getElementById("gameSelector");
+    const gameContainer = document.getElementById("game-container");
+    const shuffleButton = document.getElementById("shuffleButton");
+    const victoryMessage = document.getElementById("victoryMessage");
+    const resetButton = document.getElementById("resetButton");
+
+    const allGroups = [
+      ["kilometer", "immigrant", "jesus", "beaver"],
+      ["blue", "trimming bangs", "pygma girl", "lego kit"],
+      ["josh", "allegations", "teenage pregnancy", "unemployment"],
+      ["feminine", "intuition", "intervention", "buddha"],
+      ["a door", "mist", "knead", "love"],
+      ["ellie", "sheets", "fail an exam", "homework"],
+      ["frozen", "no ilym", "nuh uh", "*thumbs down*"],
+      ["brown", "white", "green", "red"],
+      ["garlic naans", "running around", "nail salons", "raving"],
+      ["is250", "asian", "flirty", "ny strip"],
+      ["buzz", "tingling", "eight", "blue"],
+      ["balance + harmony", "secret", "beach babe", "lint roller"],
+      ["corn", "crawfish", "sausage", "lemon"],
+      ["snoop dogg", "loctite", "birch", "glass"],
+      ["legs", "bills", "hairlines", "seconds"],
+      ["tummy", "texas roadhouse", "film", "rick"]
+    ];
+
+    const categories = [
+      "funny shirts", "remind me", "things you beat", "divine ____",
+      "i ____ you", "things on a to do list", "loud incorrect buzzer sound", "the colors of our cafe orders",
+      "stereotypes", "things you have in common with paul", "types of balls", "on your drawer",
+      "things in a seafood boil", "ingredients for a flower frame", "things that can be split", "types of rolls"
+    ];
+
+    const totalGames = Math.floor(allGroups.length / 4);
+
+    for (let i = 0; i < totalGames; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = `Connections ${i + 1}`;
+      gameSelector.appendChild(option);
+    }
+
+    gameSelector.addEventListener("change", () => renderGame(parseInt(gameSelector.value), true));
+    shuffleButton.addEventListener("click", () => renderGame(parseInt(gameSelector.value), true));
+    resetButton.addEventListener("click", () => renderGame(parseInt(gameSelector.value), true));
+
+    function renderGame(i, shouldShuffle = false) {
+      if (i < 0 || i >= totalGames) {
+        console.error("Invalid game index:", i);
+        return;
+      }
+
+      gameContainer.innerHTML = "";
+      victoryMessage.style.display = "none";
+      resetButton.style.display = "none";
+      let solvedCount = 0;
+
+      const gameDiv = document.createElement("div");
+      gameDiv.className = "game";
+
+      const solvedDiv = document.createElement("div");
+      gameDiv.appendChild(solvedDiv);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+
+      const words = allGroups.slice(i * 4, i * 4 + 4).flat();
+      const answers = allGroups.slice(i * 4, i * 4 + 4);
+      const catNames = categories.slice(i * 4, i * 4 + 4);
+      const selected = new Set();
+      const tiles = {};
+
+      if (shouldShuffle) words.sort(() => Math.random() - 0.5);
+
+      words.forEach(word => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.textContent = word;
+        tile.onclick = () => {
+          if (tile.classList.contains("found")) return;
+          tile.classList.toggle("selected");
+          selected.has(word) ? selected.delete(word) : selected.add(word);
+        };
+        tiles[word] = tile;
+        grid.appendChild(tile);
+      });
+
+      const buttonRow = document.createElement("div");
+      buttonRow.style.display = "flex";
+      buttonRow.style.justifyContent = "center";
+      buttonRow.style.gap = "1rem";
+
+      const checkButton = document.createElement("button");
+      checkButton.textContent = "Check Group";
+
+      const categoryDiv = document.createElement("div");
+      categoryDiv.className = "category";
+
+      checkButton.onclick = () => {
+        if (selected.size !== 4) {
+          categoryDiv.textContent = "Select exactly 4 words.";
+          return;
+        }
+
+        const chosen = Array.from(selected);
+        let matchFound = false;
+
+        for (let j = 0; j < 4; j++) {
+          const group = answers[j];
+          if (group.every(word => chosen.includes(word))) {
+            categoryDiv.textContent = `Group found: ${catNames[j]}`;
+            const groupDiv = document.createElement("div");
+            groupDiv.className = "solved-group";
+            group.forEach(word => {
+              const foundTile = document.createElement("div");
+              foundTile.className = "tile found";
+              foundTile.textContent = word;
+              groupDiv.appendChild(foundTile);
+
+              tiles[word].classList.add("found");
+              tiles[word].classList.remove("selected");
+              tiles[word].remove();
+            });
+            solvedDiv.appendChild(groupDiv);
+            selected.clear();
+            solvedCount++;
+
+            if (solvedCount === 4) {
+              victoryMessage.style.display = "block";
+              resetButton.style.display = "inline-block";
+              confetti({
+                particleCount: 300,
+                spread: 100,
+                origin: { y: 0.6 }
+              });
+            }
+            matchFound = true;
+            break;
+          }
+        }
+
+        if (!matchFound) {
+          for (let j = 0; j < 4; j++) {
+            const group = answers[j];
+            const intersection = group.filter(word => selected.has(word));
+            if (intersection.length === 3) {
+              categoryDiv.textContent = "One away!";
+              return;
+            }
+          }
+          categoryDiv.textContent = "Try again.";
+        }
+      };
+
+      buttonRow.appendChild(checkButton);
+      buttonRow.appendChild(shuffleButton);
+
+      gameDiv.appendChild(grid);
+      gameDiv.appendChild(buttonRow);
+      gameDiv.appendChild(categoryDiv);
+      gameContainer.appendChild(gameDiv);
+    }
+
+    renderGame(0, true);
+  </script>
+
+<script>
+  document.querySelectorAll('.tab-nav button').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.tab-nav button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
+
+      button.classList.add('active');
+      document.getElementById(button.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+
+</body>
+</html>
