@@ -311,6 +311,26 @@
     font-size: 0.9rem !important;
   }
 }
+
+@media (max-width: 768px) {
+  .grid, .solved-group {
+    grid-template-columns: repeat(4, 1fr);
+    width: 95vw;
+    margin: 0 auto 1rem auto;
+  }
+
+  .tile {
+    font-size: 0.9rem !important;
+    padding: 0.5rem;
+    min-height: 48px !important;
+  }
+
+  .game {
+    width: 96vw;
+    padding: 1rem;
+    margin: 0 auto;
+  }
+}
 </style>
 </head>
 <body>
