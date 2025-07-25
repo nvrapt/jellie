@@ -210,86 +210,62 @@
       from { transform: translateY(-10px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-  </style>
   @media (max-width: 768px) {
-  body {
-    padding: 0.5rem;
-  }
-
-  h1 {
-    font-size: 1.75rem;
-  }
-
-  nav.tab-nav {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .controls {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .grid, .solved-group {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
   .tile {
-    font-size: 0.9rem;
-    min-height: 48px;
-    padding: 0.75rem;
-  }
-
-  .game {
-    padding: 1rem;
-  }
-
-  .game-container {
-    width: 100%;
-  }
-
-  #currentWordDisplay {
-    flex-wrap: wrap;
-    font-size: 1.2rem;
-    width: 100%;
-    gap: 8px;
+    width: 60px;
+    height: 60px;
+    font-size: 1rem;
     padding: 0.5rem;
   }
 
   #letterTiles {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 60px); /* or whatever number you use */
     gap: 4px;
   }
 
-  .tile.selected, .tile.found {
-    font-size: 1rem;
+  #currentWordDisplay {
+    font-size: 1.1rem;
+    gap: 8px;
+    padding: 0.5rem;
   }
 
-  .puzzle-area {
-    width: 100%;
-    height: auto;
+  .game {
     padding: 1rem;
+    max-width: 100%;
+    width: 100%;
   }
 
-  .puzzle-layout {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+  .tab-section, .puzzle-layout {
     padding: 1rem;
   }
 
   canvas {
-    max-width: 100%;
-    height: auto;
+    width: 100% !important;
+    height: auto !important;
   }
 
   #resultModal {
     width: 90%;
     left: 5%;
     transform: none;
+    font-size: 1rem;
+  }
+
+  #scoreBoard,
+  #timer {
+    font-size: 1.1rem;
+  }
+
+  h1, h2, h3 {
+    font-size: 1.4rem;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
   }
 }
+
 
 </head>
 <body>
