@@ -209,7 +209,70 @@
       from { transform: translateY(-10px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-  </style>
+  
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .grid, .solved-group {
+    grid-template-columns: repeat(2, 45vw);
+    gap: 10px;
+  }
+
+  .tile {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+    min-height: 50px;
+  }
+
+  .puzzle-layout {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    overflow-x: hidden;
+  }
+
+  .puzzle-area {
+    width: 90vw;
+    height: auto;
+    max-width: 100%;
+  }
+
+  canvas {
+    width: 90vw !important;
+    height: auto !important;
+  }
+
+  .game {
+    padding: 1rem;
+    width: 95vw;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  nav.tab-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #currentWordDisplay {
+    flex-wrap: wrap;
+    max-width: 100%;
+    font-size: 1.2rem;
+  }
+
+  #letterTiles {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+}
+
+</style>
 </head>
 <body>
   <h1>Silly Games for Ellie</h1>
@@ -590,7 +653,15 @@ document.querySelector('[data-tab="anagrams"]').addEventListener("click", () => 
     container.innerHTML = '';
     document.getElementById('puzzleVictoryMessage').style.display = 'none';
 
-    stage = new Konva.Stage({
+    
+const containerWidth = window.innerWidth < 768 ? window.innerWidth * 0.9 : boardWidth * 2 + 40;
+const containerHeight = window.innerWidth < 768 ? containerWidth : boardHeight;
+
+stage = new Konva.Stage({
+  container: 'puzzleCanvasContainer',
+  width: containerWidth,
+  height: containerHeight
+
       container: 'puzzleCanvasContainer',
       width: boardWidth * 2 + 40,
       height: boardHeight
